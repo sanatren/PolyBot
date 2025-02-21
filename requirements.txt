@@ -19,3 +19,4 @@ langchain_core
 fastapi
 uvicorn
 langserve
+supabase
