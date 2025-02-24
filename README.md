@@ -29,9 +29,6 @@ Frameworks: LangChain
 
  ### Future Improvements
 -> Voice Input Support
--> FastAPI Backend for API Calls
--> More Language Models (GPT-4, Llama, Claude, etc.)
-_> Improved UI with React-based frontend
 
 
 🔗 GitHub: @sanatren
