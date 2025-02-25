@@ -76,7 +76,7 @@ if st.sidebar.button("➕ New Chat"):
     new_session_id = str(uuid.uuid4())
     st.session_state.sessions[new_session_id] = {"chat_history": [], "language": "English"}
     st.session_state.current_session = new_session_id
-    st.experimental_rerun()
+    st.rerun()
 
 # List existing sessions with a radio button to switch between them
 session_ids = list(st.session_state.sessions.keys())
@@ -87,7 +87,7 @@ if st.sidebar.button("🗑️ Delete Chat"):
     if len(st.session_state.sessions) > 1:
         del st.session_state.sessions[selected_session]
         st.session_state.current_session = list(st.session_state.sessions.keys())[-1]
-        st.experimental_rerun()
+        st.rerun()
 
 # Switch to the selected session if different from the current one
 if selected_session != st.session_state.current_session:
