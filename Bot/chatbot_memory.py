@@ -6,19 +6,17 @@ from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
 from supabase import create_client
 
-# ✅ Load environment variables
+
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 supabase_url = os.getenv("SUPABASE_URL")
 supabase_key = os.getenv("SUPABASE_KEY")
 
-# ✅ Connect to Supabase
+
 supabase = create_client(supabase_url, supabase_key)
 
-# ✅ Initialize OpenAI model
 model = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=openai_api_key)
 
-# ✅ Dictionary to store session-based chat history
 session_data = {}
 
 def get_session_history(session_id: str):
@@ -47,7 +45,7 @@ def save_message_to_supabase(session_id, role, message):
 def invoke_with_language(session_id: str, messages, language=None):
     """Handles chatbot invocation while ensuring memory & language persistence."""
 
-    # ✅ Retrieve session language or set default
+  
     if session_id not in session_data:
         set_session_language(session_id, "English")
 
@@ -56,17 +54,17 @@ def invoke_with_language(session_id: str, messages, language=None):
     else:
         language = session_data[session_id]["language"]
 
-    # ✅ Store user message in Supabase before calling chatbot
+   
     for msg in messages:
         save_message_to_supabase(session_id, "user", msg.content)
 
-    # ✅ Retrieve stored messages
+    
     existing_messages = get_session_history(session_id)
 
-    # ✅ Add new messages
+    
     session_data[session_id]["history"].extend(messages)
 
-    # ✅ Invoke chatbot with context and language preference
+    
     response = model.invoke(
         [
             HumanMessage(content=f"Respond in {language}: " + msg.content)
@@ -74,7 +72,7 @@ def invoke_with_language(session_id: str, messages, language=None):
         ]
     )
 
-    # ✅ Save chatbot response in Supabase
+    
     save_message_to_supabase(session_id, "assistant", response.content)
 
     return response.content
